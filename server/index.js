@@ -9,7 +9,7 @@ const FileSystem = require('fs')
 const app = Express()
 
 app.use(function (req, res) {
-    res.send({ msg: 'hello' })
+    res.send({ msg: "Hello" + Date.now()});
 })
 
 const server = Https.createServer({
@@ -27,11 +27,28 @@ wss.on('connection', function connection(ws) {
 
     var message = new proto.TestMessage()
 
-    message.setSometext('Hello Protocol Buffers')
+    message.setSometext('Hello Protocol Buffers ' +  Date.now());
 
     var bytes = message.serializeBinary()
     ws.send(bytes)
 })
+
+// WebSocket server
+wss.on('request', function(request) {
+    var connection = request.accept(null, request.origin);
+  
+    // This is the most important callback for us, we'll handle
+    // all messages from users here.
+    connection.on('message', function(message) {
+      if (message.type === 'utf8') {
+         console.log('received: %s', message)
+      }
+    });
+  
+    connection.on('close', function(connection) {
+        console.log('disconecting: %s', message)
+    });
+  });
 
 server.listen(7070, function listening() {
     console.log('Listening on %d', server.address().port)
