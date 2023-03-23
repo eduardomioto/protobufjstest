@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "ws": "latest",
-    "google-protobuf": "latest"
+    "google-protobuf": "3.21.2"
   },
   "repository": {
     "type": "git",
